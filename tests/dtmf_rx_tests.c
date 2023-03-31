@@ -864,6 +864,16 @@ static void decode_test(const char *test_file)
 }
 /*- End of function --------------------------------------------------------*/
 
+static void usage(char *cmd)
+{
+    printf("usage : %s [opt] [-d file.wav]\n"
+           "\t-c <channel_num> \n"
+           "\t-d <file.wav>\n"
+           "\t-f : use dialtone filter\n"
+           "\t-F <max_forward_twist> float\n"
+           "\t-R <max_reverse_twist> float\n",cmd);
+}
+
 int main(int argc, char *argv[])
 {
     int duration;
@@ -876,7 +886,7 @@ int main(int argc, char *argv[])
     decode_test_file = NULL;
     max_forward_twist = -1.0f;
     max_reverse_twist = -1.0f;
-    while ((opt = getopt(argc, argv, "c:d:F:fR:")) != -1)
+    while ((opt = getopt(argc, argv, "c:d:F:hfR:")) != -1)
     {
         switch (opt)
         {
@@ -895,8 +905,9 @@ int main(int argc, char *argv[])
         case 'R':
             max_reverse_twist = atof(optarg);
             break;
+        case 'h':
         default:
-            //usage();
+            usage(argv[0]);
             exit(2);
             break;
         }

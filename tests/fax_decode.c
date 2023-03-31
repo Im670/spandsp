@@ -547,6 +547,19 @@ static void v27ter_put_bit(void *user_data, int bit)
 }
 /*- End of function --------------------------------------------------------*/
 
+static void usage(char *cmd)
+{
+    printf("%s [opt] <file.wav>\n"
+        "\t-c <line_encoding> : T41D | T42D | T6 | T85 | T88 | T81 | T43 | T45\n"
+        "\t-e : error_correcting_mode = 1\n"
+        "\t-r : t30_decode_reversed = 1\n"
+        "\t-t : t30_decode = 1 , Decode T.30 messages entered from stdin\n"
+        "\t-w : image_width = 1728\n"
+        "\t-x <x_resolution> : R4 | R8 | R16\n"
+        "\t-y <y_resolution> : standard | fine | superfine\n"
+        ,cmd);
+}
+
 int main(int argc, char *argv[])
 {
     fsk_rx_state_t *fsk;
@@ -567,11 +580,12 @@ int main(int argc, char *argv[])
     unsigned int hex;
     char buf[1024];
     uint8_t bytes[1024];
-
+    char *cmd = argv[0];
+    
     filename = "fax_samp.wav";
     t30_decode_reversed = false;
     t30_decode = false;
-    while ((opt = getopt(argc, argv, "c:ertw:x:y:")) != -1)
+    while ((opt = getopt(argc, argv, "c:ehrtw:x:y:")) != -1)
     {
         switch (opt)
         {
@@ -676,6 +690,10 @@ int main(int argc, char *argv[])
             }
             /*endif*/
             break;
+        case 'h':
+        default :
+            usage(cmd);            
+            exit(2);
         }
         /*endswitch*/
     }

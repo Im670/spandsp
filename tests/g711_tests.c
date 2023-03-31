@@ -331,6 +331,19 @@ static void compliance_tests(int log_audio)
 }
 /*- End of function --------------------------------------------------------*/
 
+static void usage(char *cmd)
+{
+    printf("usage : %s [ -a | -u ] [[ -d | -e ] in_file -l out_file]\n"
+            "\t-a : alaw\n"
+            "\t-u : ulaw\n"
+            "\t-d : decode in_file \n"
+            "\t-e : enecode in_file\n"
+            "\t-l : out_file \n"
+            "eg:\n"
+            "\tg711_tests\n"
+            "\tg711_tests -u -d ulaw.wav -l line.wav\n"
+            "\tg711_tests -u -e line.wav -l ulaw.wav\n",cmd);
+}
 int main(int argc, char *argv[])
 {
     SNDFILE *inhandle;
@@ -359,7 +372,7 @@ int main(int argc, char *argv[])
     decode = false;
     in_file = NULL;
     out_file = NULL;
-    while ((opt = getopt(argc, argv, "ad:e:l:u")) != -1)
+    while ((opt = getopt(argc, argv, "ad:e:l:uh")) != -1)
     {
         switch (opt)
         {
@@ -384,8 +397,9 @@ int main(int argc, char *argv[])
             law = G711_ULAW;
             basic_tests = false;
             break;
+        case 'h':
         default:
-            //usage();
+            usage(argv[0]);
             exit(2);
         }
     }
